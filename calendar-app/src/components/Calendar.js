@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { format, startOfMonth, endOfMonth, addDays, addMonths } from 'date-fns';
 import { Link } from 'react-router-dom';
+import './Calendar.css'; // Add this if you have a CSS file for styles
 
 const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -10,7 +11,6 @@ const Calendar = () => {
     { id: 2, date: '2024-11-22', title: 'Doctor Appointment' },
   ]);
 
-  // Generate dates for the current month
   useEffect(() => {
     const start = startOfMonth(currentMonth);
     const end = endOfMonth(currentMonth);
@@ -21,27 +21,45 @@ const Calendar = () => {
     setDates(days);
   }, [currentMonth]);
 
-  // Filter events for the current month
   const filteredEvents = events.filter(
     (event) => format(new Date(event.date), 'yyyy-MM') === format(currentMonth, 'yyyy-MM')
   );
 
   return (
-    <div>
-      <h1>{format(currentMonth, 'MMMM yyyy')}</h1>
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h1 style={{ marginBottom: '20px' }}>{format(currentMonth, 'MMMM yyyy')}</h1>
 
-      {/* Month navigation */}
-      <div>
-        <button onClick={() => setCurrentMonth(addMonths(currentMonth, -1))}>
+      {/* Month Navigation Buttons */}
+      <div style={{ marginBottom: '20px' }}>
+        <button
+          onClick={() => setCurrentMonth(addMonths(currentMonth, -1))}
+          style={{
+            padding: '10px 20px',
+            marginRight: '10px',
+            backgroundColor: '#000',
+            color: '#fff',
+            borderRadius: '5px',
+            border: 'none',
+          }}
+        >
           Previous
         </button>
-        <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
+        <button
+          onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#000',
+            color: '#fff',
+            borderRadius: '5px',
+            border: 'none',
+          }}
+        >
           Next
         </button>
       </div>
 
       {/* Calendar Grid */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', width: '300px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '80%', margin: '0 auto' }}>
         {dates.map((date, index) => (
           <div
             key={index}
@@ -51,6 +69,7 @@ const Calendar = () => {
               padding: '10px',
               textAlign: 'center',
               width: '40px',
+              height: '40px',
             }}
           >
             {format(date, 'd')}
@@ -59,10 +78,19 @@ const Calendar = () => {
       </div>
 
       {/* Event List */}
-      <ul>
+      <ul style={{ listStyleType: 'none', marginTop: '20px' }}>
         {filteredEvents.map((event) => (
-          <li key={event.id}>
-            <Link to={`/event/${event.id}`}>{event.title}</Link>
+          <li key={event.id} style={{ marginBottom: '10px' }}>
+            <Link
+              to={`/event/${event.id}`}
+              style={{
+                color: '#000',
+                textDecoration: 'none',
+                fontWeight: 'bold',
+              }}
+            >
+              {event.title}
+            </Link>
           </li>
         ))}
       </ul>
